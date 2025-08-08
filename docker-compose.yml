@@ -1,0 +1,27 @@
+services:
+  cors-killer:
+    build:
+      context: ./caddy
+    container_name: cors-killer
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      - APP_PORT=${APP_PORT}
+      - CLIENT_URL=${CLIENT_URL}
+      - CLIENT_HOST=${CLIENT_HOST}
+      - SERVER_URL=${SERVER_URL}
+      - SERVER_HOST=${SERVER_HOST}
+      - SERVER_PROTOCOL=${SERVER_PROTOCOL}
+      - USER_AGENT=${USER_AGENT}
+    env_file:
+      - .env
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - cors-killer-network
+
+networks:
+  cors-killer-network:
+    driver: bridge
+    name: cors-killer-network

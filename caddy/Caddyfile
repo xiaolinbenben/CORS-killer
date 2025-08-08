@@ -1,0 +1,26 @@
+:{$APP_PORT} {
+    header {
+        Access-Control-Allow-Origin "*"
+        Access-Control-Allow-Methods "*"
+        Access-Control-Allow-Headers "*"
+    }
+
+    handle /api/* {
+        reverse_proxy {$SERVER_URL} {
+            header_up Host {$SERVER_HOST}
+            header_up Referer {$SERVER_URL}/
+            header_up Origin {$SERVER_URL}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {$SERVER_PROTOCOL}
+            header_up User-Agent "{$USER_AGENT}"
+        }
+    }
+
+    handle {
+        reverse_proxy {$CLIENT_URL} {
+            header_up Host {$CLIENT_HOST}
+            header_up Origin {$CLIENT_URL}
+        }
+    }
+}
