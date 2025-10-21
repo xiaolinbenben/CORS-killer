@@ -17,7 +17,7 @@
         }
     }
 
-    handle {
+    handle /chat/* {
         reverse_proxy {$CLIENT_URL} {
             header_up Host {$CLIENT_HOST}
             header_up Origin {$CLIENT_URL}
